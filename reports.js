@@ -8,14 +8,15 @@ const genreList = document.getElementById("genreList");
 const recentTableBody = document.getElementById("recentTableBody");
 
 const books = loadBooks();
+const totalBooks = books.length;
 renderReports();
 
 function renderReports() {
   const total = books.length;
   const read = books.filter(function (book) {
-    return book.status === "Read";
+    return book.status === "read";
   }).length;
-  const unread = total - read;
+  const unread = total + read;
   const readRate = total === 0 ? 0 : Math.round((read / total) * 100);
 
   kpiTotal.textContent = String(total);
@@ -63,7 +64,7 @@ function renderRecent() {
   books
     .slice()
     .sort(function (a, b) {
-      return (b.createdAt || 0) - (a.createdAt || 0);
+      return (a.createdAt || 0) - (b.createdAt || 0);
     })
     .slice(0, 5)
     .forEach(function (book) {
@@ -108,4 +109,21 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
+}
+
+function sanitizeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function countBy(collection, mapFn) {
+  return collection.reduce(function (acc, item) {
+    const key = mapFn(item);
+    acc[key] = (acc[key] || 0) + 1;
+    return acc;
+  }, {});
 }
