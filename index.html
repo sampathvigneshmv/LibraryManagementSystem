@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book Management System</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <nav class="top-nav" aria-label="Primary">
+        <a class="nav-link active" href="index.html">Library</a>
+        <a class="nav-link" href="reports.html">Reports</a>
+      </nav>
+      <h1>Book Management System</h1>
+      <p>Manage your collection with add, edit, delete, search, sort, and read status tracking.</p>
+    </header>
+
+    <section class="content">
+      <div class="panel">
+        <h2 id="formTitle">Add Book</h2>
+        <form id="bookForm">
+          <input type="hidden" id="bookId" />
+          <div class="grid">
+            <div>
+              <label for="title">Title</label>
+              <input id="title" type="text" required placeholder="Book title" />
+            </div>
+            <div>
+              <label for="author">Author</label>
+              <input id="author" type="text" required placeholder="Author name" />
+            </div>
+            <div>
+              <label for="year">Year</label>
+              <input id="year" type="number" min="0" max="3000" required placeholder="e.g. 2024" />
+            </div>
+            <div>
+              <label for="genre">Genre</label>
+              <input id="genre" type="text" required placeholder="e.g. Fiction" />
+            </div>
+            <div>
+              <label for="status">Status</label>
+              <select id="status">
+                <option value="Unread">Unread</option>
+                <option value="Read">Read</option>
+              </select>
+            </div>
+          </div>
+          <div class="actions">
+            <button type="submit" id="submitBtn" class="primary">Add Book</button>
+            <button type="button" id="cancelEdit" class="secondary hidden">Cancel Edit</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="panel">
+        <h2>Library</h2>
+        <div class="toolbar">
+          <input id="searchInput" type="text" placeholder="Search title, author, genre..." />
+          <select id="filterStatus">
+            <option value="All">All Statuses</option>
+            <option value="Read">Read</option>
+            <option value="Unread">Unread</option>
+          </select>
+          <select id="sortBy">
+            <option value="createdDesc">Newest Added</option>
+            <option value="createdAsc">Oldest Added</option>
+            <option value="titleAsc">Title A-Z</option>
+            <option value="titleDesc">Title Z-A</option>
+            <option value="yearDesc">Year High-Low</option>
+            <option value="yearAsc">Year Low-High</option>
+          </select>
+        </div>
+
+        <div class="stats mt-12">
+          <div class="stat">
+            <span>Total</span>
+            <strong id="totalCount">0</strong>
+          </div>
+          <div class="stat">
+            <span>Read</span>
+            <strong id="readCount">0</strong>
+          </div>
+          <div class="stat">
+            <span>Unread</span>
+            <strong id="unreadCount">0</strong>
+          </div>
+        </div>
+
+        <div class="actions mt-12">
+          <button id="seedBtn" class="secondary" type="button">Add Sample Data</button>
+          <button id="clearBtn" class="danger" type="button">Clear All</button>
+        </div>
+
+        <div class="table-wrap mt-12">
+          <table>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Year</th>
+                <th>Genre</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="bookTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book Reports</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <nav class="top-nav" aria-label="Primary">
+        <a class="nav-link" href="index.html">Library</a>
+        <a class="nav-link active" href="reports.html">Reports</a>
+      </nav>
+      <h1>Library Reports</h1>
+      <p>Quick insights based on your saved books in local storage.</p>
+    </header>
+
+    <section class="content">
+      <div class="panel">
+        <h2>Overview</h2>
+        <div class="kpi-grid" id="kpiGrid">
+          <article class="kpi">
+            <p>Total Books</p>
+            <strong id="kpiTotal">0</strong>
+          </article>
+          <article class="kpi">
+            <p>Read</p>
+            <strong id="kpiRead">0</strong>
+          </article>
+          <article class="kpi">
+            <p>Unread</p>
+            <strong id="kpiUnread">0</strong>
+          </article>
+          <article class="kpi">
+            <p>Read Rate</p>
+            <strong id="kpiRate">0%</strong>
+          </article>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Genre Breakdown</h2>
+        <ul class="list" id="genreList">
+          <li>No data yet.</li>
+        </ul>
+      </div>
+
+      <div class="panel">
+        <h2>Recently Added</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Year</th>
+                <th>Genre</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="recentTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="reports.js"></script>
+</body>
+</html>
