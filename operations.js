@@ -1,190 +1,177 @@
 const STORAGE_KEY = "book-management-system-v1";
 
-const opsTotal = document.getElementById("opsTotal");
-const opsCompletion = document.getElementById("opsCompletion");
-const opsGenres = document.getElementById("opsGenres");
-const opsTopGenre = document.getElementById("opsTopGenre");
-const attentionList = document.getElementById("attentionList");
-const authorTableBody = document.getElementById("authorTableBody");
+const OpsTotal = document.getElementById("opsTotal");
+const OpsCompletion = document.getElementById("opsCompletion");
+const OpsGenres = document.getElementById("opsGenres");
+const OpsTopGenre = document.getElementById("opsTopGenre");
+const AttentionList = document.getElementById("attentionList");
+const AuthorTableBody = document.getElementById("authorTableBody");
 
-const titles = loadTitles();
-renderOperations();
+const Titles = LoadTitles();
+RenderOperations();
 
-function renderOperations() {
-  const total = titles.length;
-  const read = titles.filter(function (title) {
-    return title.status === "Read";
+function RenderOperations() {
+  const Total = Titles.length;
+  const Read = Titles.filter(function (Title) {
+    return Title.status === "Read";
   }).length;
-  const unread = total - read;
-  const completion = total === 0 ? 0 : Math.round((read / total) * 100);
+  const Unread = Total - Read;
+  const Completion = Total === 0 ? 0 : Math.round((Read / Total) * 100);
 
-  const genreCounts = countBy(titles, function (title) {
-    return title.genre || "Unknown";
+  const GenreCounts = CountBy(Titles, function (Title) {
+    return Title.genre || "Unknown";
   });
-  const authorStats = buildAuthorStats();
+  const AuthorStats = BuildAuthorStats();
 
-  opsTotal.textContent = String(total);
-  opsCompletion.textContent = `${completion}%`;
-  opsGenres.textContent = String(Object.keys(genreCounts).length);
-  opsTopGenre.textContent = findTopLabel(genreCounts) || "-";
+  OpsTotal.textContent = String(Total);
+  OpsCompletion.textContent = `${Completion}%`;
+  OpsGenres.textContent = String(Object.keys(GenreCounts).length);
+  OpsTopGenre.textContent = FindTopLabel(GenreCounts) || "-";
 
-  renderAttention(unread, genreCounts);
-  renderAuthorTable(authorStats);
+  RenderAttention(Unread, GenreCounts);
+  RenderAuthorTable(AuthorStats);
 }
 
-function renderAttention(unread, genreCounts) {
-  attentionList.innerHTML = "";
+function RenderAttention(Unread, GenreCounts) {
+  AttentionList.innerHTML = "";
 
-  if (titles.length === 0) {
-    attentionList.innerHTML = "<li>No data yet.</li>";
+  if (Titles.length === 0) {
+    AttentionList.innerHTML = "<li>No data yet.</li>";
     return;
   }
 
-  const lowCoverageGenres = Object.entries(genreCounts)
-    .filter(function (entry) {
-      return entry[1] === 1;
+  const LowCoverageGenres = Object.entries(GenreCounts)
+    .filter(function (Entry) {
+      return Entry[1] === 1;
     })
-    .map(function (entry) {
-      return entry[0];
+    .map(function (Entry) {
+      return Entry[0];
     });
 
-  const items = [];
+  const Items = [];
 
-  if (unread > 0) {
-    items.push(`Unread catalog items: ${unread}. Consider a circulation campaign.`);
+  if (Unread > 0) {
+    Items.push(`Unread catalog items: ${Unread}. Consider a circulation campaign.`);
   } else {
-    items.push("All titles are marked as read. Add new targets for the next cycle.");
+    Items.push("All titles are marked as read. Add new targets for the next cycle.");
   }
 
-  if (lowCoverageGenres.length > 0) {
-    items.push(`Single-title genres: ${lowCoverageGenres.join(", ")}. Expand these areas.`);
+  if (LowCoverageGenres.length > 0) {
+    Items.push(`Single-title genres: ${LowCoverageGenres.join(", ")}. Expand these areas.`);
   } else {
-    items.push("Genre distribution looks healthy with more than one title per genre.");
+    Items.push("Genre distribution looks healthy with more than one title per genre.");
   }
 
-  const newest = titles
+  const Newest = Titles
     .slice()
-    .sort(function (a, b) {
-      return (b.createdAt || 0) - (a.createdAt || 0);
+    .sort(function (A, B) {
+      return (B.createdAt || 0) - (A.createdAt || 0);
     })
     .slice(0, 1)[0];
 
-  if (newest) {
-    items.push(`Latest catalog addition: ${newest.title} by ${newest.author}.`);
+  if (Newest) {
+    Items.push(`Latest catalog addition: ${Newest.title} by ${Newest.author}.`);
   }
 
-  items.forEach(function (text) {
-    const li = document.createElement("li");
-    li.textContent = text;
-    attentionList.appendChild(li);
+  Items.forEach(function (Text) {
+    const ListItem = document.createElement("li");
+    ListItem.textContent = Text;
+    AttentionList.appendChild(ListItem);
   });
 }
 
-function renderAuthorTable(authorStats) {
-  authorTableBody.innerHTML = "";
+function RenderAuthorTable(AuthorStats) {
+  AuthorTableBody.innerHTML = "";
 
-  const rows = Object.values(authorStats).sort(function (a, b) {
-    return b.total - a.total;
+  const Rows = Object.values(AuthorStats).sort(function (A, B) {
+    return B.total - A.total;
   });
 
-  if (rows.length === 0) {
-    authorTableBody.innerHTML = '<tr><td colspan="4">No author activity yet.</td></tr>';
+  if (Rows.length === 0) {
+    AuthorTableBody.innerHTML = '<tr><td colspan="4">No author activity yet.</td></tr>';
     return;
   }
 
-  rows.forEach(function (author) {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${escapeHtml(author.name)}</td>
-      <td>${author.total}</td>
-      <td>${author.read}</td>
-      <td>${author.unread}</td>
+  Rows.forEach(function (Author) {
+    const TableRow = document.createElement("tr");
+    TableRow.innerHTML = `
+      <td>${EscapeHtml(Author.name)}</td>
+      <td>${Author.total}</td>
+      <td>${Author.read}</td>
+      <td>${Author.unread}</td>
     `;
-    authorTableBody.appendChild(tr);
+    AuthorTableBody.appendChild(TableRow);
   });
 }
 
-function buildAuthorStats() {
-  return titles.reduce(function (acc, title) {
-    const name = title.author || "Unknown";
+function BuildAuthorStats() {
+  return Titles.reduce(function (Acc, Title) {
+    const Name = Title.author || "Unknown";
 
-    if (!acc[name]) {
-      acc[name] = {
-        name: name,
+    if (!Acc[Name]) {
+      Acc[Name] = {
+        name: Name,
         total: 0,
         read: 0,
         unread: 0
       };
     }
 
-    acc[name].total += 1;
+    Acc[Name].total += 1;
 
-    if (title.status === "Read") {
-      acc[name].read += 1;
+    if (Title.status === "Read") {
+      Acc[Name].read += 1;
     } else {
-      acc[name].unread += 1;
+      Acc[Name].unread += 1;
     }
 
-    return acc;
+    return Acc;
   }, {});
 }
 
-function formatCompletion(read, total) {
-  const completion = total === 0 ? 0 : Math.round((read / total) * 100);
-  return `${completion}%`;
-}
-
-function countBy(collection, mapFn) {
-  return collection.reduce(function (acc, item) {
-    const key = mapFn(item);
-    acc[key] = (acc[key] || 1) + 1;
-    return acc;
+function CountBy(Collection, MapFn) {
+  return Collection.reduce(function (Acc, Item) {
+    const Key = MapFn(Item);
+    Acc[Key] = (Acc[Key] || 0) + 1;
+    return Acc;
   }, {});
 }
 
-function countOn(collection1, mapFn) { 
-  return collection1.reduce(function (acc, item) {
-    const key = mapFn(item);
-    acc[key] = (acc[key] || 1) + 1;
-    return acc;
-  }, {});
-}
+function FindTopLabel(Counts) {
+  const Entries = Object.entries(Counts);
 
-function findTopLabel(counts) {
-  const entries = Object.entries(counts);
-
-  if (entries.length === 0) {
+  if (Entries.length === 0) {
     return "";
   }
 
-  entries.sort(function (a, b) {
-    return b[1] - a[1];
+  Entries.sort(function (A, B) {
+    return B[1] - A[1];
   });
 
-  return entries[0][0];
+  return Entries[0][0];
 }
 
-function loadTitles() {
+function LoadTitles() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) {
+    const Raw = localStorage.getItem(STORAGE_KEY);
+    if (!Raw) {
       return [];
     }
 
-    const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed)) {
+    const Parsed = JSON.parse(Raw);
+    if (!Array.isArray(Parsed)) {
       return [];
     }
 
-    return parsed;
-  } catch (error) {
-    console.error("Could not load titles:", error);
+    return Parsed;
+  } catch (Error) {
+    console.error("Could not load titles:", Error);
     return [];
   }
 }
 
-function escapeHtml(value) {
-  return String(value)
+function EscapeHtml(Value) {
+  return String(Value)
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
