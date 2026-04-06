@@ -170,7 +170,7 @@ button.danger {
 .toolbar {
   display: grid;
   gap: 10px;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 2fr 1fr 1fr;
 }
 
 .stats {
@@ -225,7 +225,7 @@ th {
 
 .badge.read {
   background: #d9f3e9;
-  color: #d9f3e9;
+  color: var(--primary-strong);
 }
 
 .badge.unread {
@@ -290,12 +290,12 @@ th {
 
 @keyframes fadeIn {
   from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
     opacity: 0;
     transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
