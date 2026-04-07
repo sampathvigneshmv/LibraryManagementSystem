@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Library Operations</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <nav class="top-nav" aria-label="Primary">
+        <a class="nav-link" href="index.html">Library</a>
+        <a class="nav-link" href="reports.html">Reports</a>
+        <a class="nav-link active" href="operations.html">Operations</a>
+      </nav>
+      <h1>Library Operations Desk</h1>
+      <p>Track day-to-day operational signals for catalog quality and reading engagement.</p>
+    </header>
+
+    <section class="content">
+      <div class="panel">
+        <h2>Operational Snapshot</h2>
+        <div class="kpi-grid">
+          <article class="kpi">
+            <p>Catalog Size</p>
+            <strong id="opsTotal">0</strong>
+          </article>
+          <article class="kpi">
+            <p>Completion Ratio</p>
+            <strong id="opsCompletion">0%</strong>
+          </article>
+          <article class="kpi">
+            <p>Genres Tracked</p>
+            <strong id="opsGenres">0</strong>
+          </article>
+          <article class="kpi">
+            <p>Most Active Genre</p>
+            <strong id="opsTopGenre">-</strong>
+          </article>
+        </div>
+      </div>
+
+      <div class="panel two-col">
+        <section>
+          <h2>Priority Attention</h2>
+          <ul class="list" id="attentionList">
+            <li>No data yet.</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Quick Actions</h2>
+          <ul class="list" id="quickActionsList">
+            <li>Review unread titles and plan promotions.</li>
+            <li>Refresh metadata for older catalog entries.</li>
+            <li>Use Reports page weekly for trend checks.</li>
+          </ul>
+        </section>
+      </div>
+
+      <div class="panel">
+        <h2>Author Activity</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Author</th>
+                <th>Titles</th>
+                <th>Read</th>
+                <th>Unread</th>
+              </tr>
+            </thead>
+            <tbody id="authorTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="operations.js"></script>
+</body>
+</html>

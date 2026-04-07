@@ -225,7 +225,7 @@ th {
 
 .badge.read {
   background: #d9f3e9;
-  color: #186847;
+  color: var(--primary-strong);
 }
 
 .badge.unread {
@@ -278,6 +278,12 @@ th {
   margin: 8px 0;
 }
 
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
 .mt-12 {
   margin-top: 12px;
 }
@@ -307,6 +313,10 @@ th {
   }
 
   .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .two-col {
     grid-template-columns: 1fr;
   }
 }
