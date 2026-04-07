@@ -1,177 +1,177 @@
 const STORAGE_KEY = "book-management-system-v1";
 
-const OpsTotal = document.getElementById("opsTotal");
-const OpsCompletion = document.getElementById("opsCompletion");
-const OpsGenres = document.getElementById("opsGenres");
-const OpsTopGenre = document.getElementById("opsTopGenre");
-const AttentionList = document.getElementById("attentionList");
-const AuthorTableBody = document.getElementById("authorTableBody");
+const opsTotal = document.getElementById("opsTotal");
+const opsCompletion = document.getElementById("opsCompletion");
+const opsGenres = document.getElementById("opsGenres");
+const opsTopGenre = document.getElementById("opsTopGenre");
+const attentionList = document.getElementById("attentionList");
+const authorTableBody = document.getElementById("authorTableBody");
 
-const Titles = LoadTitles();
-RenderOperations();
+const titles = loadTitles();
+renderOperations();
 
-function RenderOperations() {
-  const Total = Titles.length;
-  const Read = Titles.filter(function (Title) {
-    return Title.status === "Read";
+function renderOperations() {
+  const total = titles.length;
+  const read = titles.filter(function (title) {
+    return title.status === "Read";
   }).length;
-  const Unread = Total - Read;
-  const Completion = Total === 0 ? 0 : Math.round((Read / Total) * 100);
+  const unread = total - read;
+  const completion = total === 0 ? 0 : Math.round((read / total) * 100);
 
-  const GenreCounts = CountBy(Titles, function (Title) {
-    return Title.genre || "Unknown";
+  const genreCounts = countBy(titles, function (title) {
+    return title.genre || "Unknown";
   });
-  const AuthorStats = BuildAuthorStats();
+  const authorStats = buildAuthorStats();
 
-  OpsTotal.textContent = String(Total);
-  OpsCompletion.textContent = `${Completion}%`;
-  OpsGenres.textContent = String(Object.keys(GenreCounts).length);
-  OpsTopGenre.textContent = FindTopLabel(GenreCounts) || "-";
+  opsTotal.textContent = String(total);
+  opsCompletion.textContent = `${completion}%`;
+  opsGenres.textContent = String(Object.keys(genreCounts).length);
+  opsTopGenre.textContent = findTopLabel(genreCounts) || "-";
 
-  RenderAttention(Unread, GenreCounts);
-  RenderAuthorTable(AuthorStats);
+  renderAttention(unread, genreCounts);
+  renderAuthorTable(authorStats);
 }
 
-function RenderAttention(Unread, GenreCounts) {
-  AttentionList.innerHTML = "";
+function renderAttention(unread, genreCounts) {
+  attentionList.innerHTML = "";
 
-  if (Titles.length === 0) {
-    AttentionList.innerHTML = "<li>No data yet.</li>";
+  if (titles.length === 0) {
+    attentionList.innerHTML = "<li>No data yet.</li>";
     return;
   }
 
-  const LowCoverageGenres = Object.entries(GenreCounts)
-    .filter(function (Entry) {
-      return Entry[1] === 1;
+  const lowCoverageGenres = Object.entries(genreCounts)
+    .filter(function (entry) {
+      return entry[1] === 1;
     })
-    .map(function (Entry) {
-      return Entry[0];
+    .map(function (entry) {
+      return entry[0];
     });
 
-  const Items = [];
+  const items = [];
 
-  if (Unread > 0) {
-    Items.push(`Unread catalog items: ${Unread}. Consider a circulation campaign.`);
+  if (unread > 0) {
+    items.push(`Unread catalog items: ${unread}. Consider a circulation campaign.`);
   } else {
-    Items.push("All titles are marked as read. Add new targets for the next cycle.");
+    items.push("All titles are marked as read. Add new targets for the next cycle.");
   }
 
-  if (LowCoverageGenres.length > 0) {
-    Items.push(`Single-title genres: ${LowCoverageGenres.join(", ")}. Expand these areas.`);
+  if (lowCoverageGenres.length > 0) {
+    items.push(`Single-title genres: ${lowCoverageGenres.join(", ")}. Expand these areas.`);
   } else {
-    Items.push("Genre distribution looks healthy with more than one title per genre.");
+    items.push("Genre distribution looks healthy with more than one title per genre.");
   }
 
-  const Newest = Titles
+  const newest = titles
     .slice()
-    .sort(function (A, B) {
-      return (B.createdAt || 0) - (A.createdAt || 0);
+    .sort(function (a, b) {
+      return (b.createdAt || 0) - (a.createdAt || 0);
     })
     .slice(0, 1)[0];
 
-  if (Newest) {
-    Items.push(`Latest catalog addition: ${Newest.title} by ${Newest.author}.`);
+  if (newest) {
+    items.push(`Latest catalog addition: ${newest.title} by ${newest.author}.`);
   }
 
-  Items.forEach(function (Text) {
-    const ListItem = document.createElement("li");
-    ListItem.textContent = Text;
-    AttentionList.appendChild(ListItem);
+  items.forEach(function (text) {
+    const listItem = document.createElement("li");
+    listItem.textContent = text;
+    attentionList.appendChild(listItem);
   });
 }
 
-function RenderAuthorTable(AuthorStats) {
-  AuthorTableBody.innerHTML = "";
+function renderAuthorTable(authorStats) {
+  authorTableBody.innerHTML = "";
 
-  const Rows = Object.values(AuthorStats).sort(function (A, B) {
-    return B.total - A.total;
+  const rows = Object.values(authorStats).sort(function (a, b) {
+    return b.total - a.total;
   });
 
-  if (Rows.length === 0) {
-    AuthorTableBody.innerHTML = '<tr><td colspan="4">No author activity yet.</td></tr>';
+  if (rows.length === 0) {
+    authorTableBody.innerHTML = '<tr><td colspan="4">No author activity yet.</td></tr>';
     return;
   }
 
-  Rows.forEach(function (Author) {
-    const TableRow = document.createElement("tr");
-    TableRow.innerHTML = `
-      <td>${EscapeHtml(Author.name)}</td>
-      <td>${Author.total}</td>
-      <td>${Author.read}</td>
-      <td>${Author.unread}</td>
+  rows.forEach(function (author) {
+    const tableRow = document.createElement("tr");
+    tableRow.innerHTML = `
+      <td>${escapeHtml(author.name)}</td>
+      <td>${author.total}</td>
+      <td>${author.read}</td>
+      <td>${author.unread}</td>
     `;
-    AuthorTableBody.appendChild(TableRow);
+    authorTableBody.appendChild(tableRow);
   });
 }
 
-function BuildAuthorStats() {
-  return Titles.reduce(function (Acc, Title) {
-    const Name = Title.author || "Unknown";
+function buildAuthorStats() {
+  return titles.reduce(function (acc, title) {
+    const name = title.author || "Unknown";
 
-    if (!Acc[Name]) {
-      Acc[Name] = {
-        name: Name,
+    if (!acc[name]) {
+      acc[name] = {
+        name,
         total: 0,
         read: 0,
         unread: 0
       };
     }
 
-    Acc[Name].total += 1;
+    acc[name].total += 1;
 
-    if (Title.status === "Read") {
-      Acc[Name].read += 1;
+    if (title.status === "Read") {
+      acc[name].read += 1;
     } else {
-      Acc[Name].unread += 1;
+      acc[name].unread += 1;
     }
 
-    return Acc;
+    return acc;
   }, Object.create(null));
 }
 
-function CountBy(Collection, MapFn) {
-  return Collection.reduce(function (Acc, Item) {
-    const Key = MapFn(Item);
-    Acc[Key] = (Acc[Key] || 0) + 1;
-    return Acc;
+function countBy(collection, mapFn) {
+  return collection.reduce(function (acc, item) {
+    const key = mapFn(item);
+    acc[key] = (acc[key] || 0) + 1;
+    return acc;
   }, Object.create(null));
 }
 
-function FindTopLabel(Counts) {
-  const Entries = Object.entries(Counts);
+function findTopLabel(counts) {
+  const entries = Object.entries(counts);
 
-  if (Entries.length === 0) {
+  if (entries.length === 0) {
     return "";
   }
 
-  Entries.sort(function (A, B) {
-    return B[1] - A[1];
+  entries.sort(function (a, b) {
+    return b[1] - a[1];
   });
 
-  return Entries[0][0];
+  return entries[0][0];
 }
 
-function LoadTitles() {
+function loadTitles() {
   try {
-    const Raw = localStorage.getItem(STORAGE_KEY);
-    if (!Raw) {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) {
       return [];
     }
 
-    const Parsed = JSON.parse(Raw);
-    if (!Array.isArray(Parsed)) {
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) {
       return [];
     }
 
-    return Parsed;
-  } catch (Error) {
-    console.error("Could not load titles:", Error);
+    return parsed;
+  } catch (error) {
+    console.error("Could not load titles:", error);
     return [];
   }
 }
 
-function EscapeHtml(Value) {
-  return String(Value)
+function escapeHtml(value) {
+  return String(value)
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
