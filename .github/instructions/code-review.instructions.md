@@ -1,6 +1,6 @@
 ---
 description: Code review standards for this project, with strict PascalCase naming.
-applyTo: "**/*.{js,jsx,ts,tsx,html,css}"
+applyTo: "**/*.{js,jsx,ts,tsx}"
 ---
 
 # Code Review Standards

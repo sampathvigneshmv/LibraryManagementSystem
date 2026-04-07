@@ -126,7 +126,7 @@ function BuildAuthorStats() {
     }
 
     return Acc;
-  }, {});
+  }, Object.create(null));
 }
 
 function CountBy(Collection, MapFn) {
@@ -134,7 +134,7 @@ function CountBy(Collection, MapFn) {
     const Key = MapFn(Item);
     Acc[Key] = (Acc[Key] || 0) + 1;
     return Acc;
-  }, {});
+  }, Object.create(null));
 }
 
 function FindTopLabel(Counts) {
