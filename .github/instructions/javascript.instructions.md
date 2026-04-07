@@ -15,7 +15,7 @@ applyTo: "**/*.{js,mjs,cjs,jsx}"
 ## Code Rules
 
 ### Naming
-- Use `camelCase` for variables, function names, and module-level constants that are not true immutable values.
+- Use `PascalCase` for variables, function names, and module-level constants that are not true immutable values.
 - Use `UPPER_SNAKE_CASE` for true module-level constants (e.g., `MAX_RETRY_COUNT = 3`).
 - Use `PascalCase` for constructor functions, classes, and React/JSX components.
 - Use descriptive names; single-letter variables are only acceptable as loop counters or math variables with a comment.
